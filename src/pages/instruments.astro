@@ -1,0 +1,20 @@
+---
+import { createServerClient } from "../lib/supabase";
+
+const supabase = createServerClient();
+const { data: instruments } = await supabase.from("instruments").select();
+---
+
+<html>
+  <head>
+    <title>Instruments</title>
+  </head>
+  <body>
+    <h1>Instruments</h1>
+    <ul>
+      {instruments?.map((instrument) => (
+        <li>{instrument.name}</li>
+      ))}
+    </ul>
+  </body>
+</html>

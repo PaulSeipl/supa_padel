@@ -6,6 +6,10 @@ import { getDynamicHeaders, getValidToken } from "./padelApi.ts";
 // Fetch environment secrets
 const MATCHES_URL = Deno.env.get("PADEL_MATCHES_URL") ?? "";
 const NTFY_CHANNEL = Deno.env.get("PADEL_NTFY_CHANNEL") ?? "";
+const START_WEEKDAY = Deno.env.get("PADEL_START_WEEKDAY") ?? "17";
+const END_WEEKDAY = Deno.env.get("PADEL_END_WEEKDAY") ?? "21";
+const START_WEEKEND = Deno.env.get("PADEL_START_WEEKEND") ?? "8";
+const END_WEEKEND = Deno.env.get("PADEL_END_WEEKEND") ?? "21";
 
 export default {
   fetch: withSupabase({ auth: "secret:new_secret" }, async (req, ctx) => {
@@ -99,7 +103,12 @@ export default {
           for (const timeBlock of startingTimes) {
             const matchStartsAt = timeBlock.matchStartsAt;
 
-            if (!isWithinTimeWindow(matchStartsAt)) continue;
+            if (
+              !isWithinTimeWindow(matchStartsAt, [
+                Number(START_WEEKDAY),
+                Number(END_WEEKDAY),
+              ], [Number(START_WEEKEND), Number(END_WEEKEND)])
+            ) continue;
 
             for (const court of timeBlock.availableCourts || []) {
               for (const slot of court.availableMatchSlots || []) {
@@ -127,6 +136,7 @@ export default {
                     // Sofort zeitzonensicher formatieren
                     dateStr: dateObj.toLocaleDateString("de-DE", {
                       timeZone: "Europe/Berlin",
+                      weekday: "short",
                       day: "2-digit",
                       month: "2-digit",
                     }),

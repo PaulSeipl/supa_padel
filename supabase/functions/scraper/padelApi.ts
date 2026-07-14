@@ -7,12 +7,6 @@ const CLIENT_SECRET = Deno.env.get("PADEL_CLIENT_SECRET") ?? "";
 const CLIENT_ID = Deno.env.get("PADEL_CLIENT_ID") ?? "";
 const AUTH_URL = Deno.env.get("PADEL_AUTH_URL") ?? "";
 const HEADERS_URL = Deno.env.get("PADEL_HEADERS_URL") ?? "";
-const MATCHES_URL = Deno.env.get("PADEL_MATCHES_URL") ?? "";
-const NTFY_CHANNEL = Deno.env.get("PADEL_NTFY_CHANNEL") ?? "";
-const START_WEEKDAY = Deno.env.get("PADEL_START_WEEKDAY") ?? "17";
-const END_WEEKDAY = Deno.env.get("PADEL_END_WEEKDAY") ?? "21";
-const START_WEEKEND = Deno.env.get("PADEL_START_WEEKEND") ?? "8";
-const END_WEEKEND = Deno.env.get("PADEL_END_WEEKEND") ?? "22";
 const GRANT_TYPE = "password";
 
 export async function getValidToken(supabaseAdmin: SupabaseClient) {
